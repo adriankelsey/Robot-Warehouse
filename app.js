@@ -3,7 +3,7 @@ let grid = [];
 //commands array, this is where commands will be pushed into
 let commandsX = [];
 let commandsY = [];
-//robot starting position
+//robot starting x and y coordinates
 let x = 0;
 let y = 0;
 
@@ -55,68 +55,107 @@ function West() {
 
 // Main App
 function app() {
-  // calculates array by adding array together with reduce
-  // calculate position x
-  calculatePositionX = (commandsX) => {
-    if (commandsX.length > 0) {
-      return (x = commandsX.reduce((a, b) => a + b));
-    } else {
-      return (x = 0);
-    }
-  };
-  // calculate position y
-  calculatePositionY = (commandsY) => {
-    if (commandsY.length > 0) {
-      return (y = commandsY.reduce((a, b) => a + b));
-    } else {
-      return (y = 0);
-    }
-  };
   // readline question
-  rl.question('Give robot commands:  ', function (command) {
-    // switch statement that process users input into a command
-    switch (command) {
-      // case N
-      case 'N':
-        North();
-        x = calculatePositionX(commandsX);
-        y = calculatePositionY(commandsY);
-        robotPosition = grid[y][x];
-        console.log(robotPosition);
-        app();
-        break;
-      // case S
-      case 'S':
-        South();
-        x = calculatePositionX(commandsX);
-        y = calculatePositionY(commandsY);
-        robotPosition = grid[y][x];
-        console.log(robotPosition);
-        app();
-        break;
-      // case E
-      case 'E':
-        East();
-        x = calculatePositionX(commandsX);
-        y = calculatePositionY(commandsY);
-        robotPosition = grid[y][x];
-        console.log(robotPosition);
-        app();
-        break;
-      // case W
-      case 'W':
-        West();
-        x = calculatePositionX(commandsX);
-        y = calculatePositionY(commandsY);
-        robotPosition = grid[y][x];
-        console.log(robotPosition);
-        app();
-        break;
+  rl.question(
+    'Give robot commands by typing N, W, E, S:  ',
+    function (command) {
+      // calculates array by adding array together with reduce
+      // calculate position y
+      calculatePositionY = (commandsY) => {
+        if (commandsY.length > 0) {
+          return (y = commandsY.reduce((a, b) => a + b));
+        } else {
+          return (y = 0);
+        }
+      };
+      // calculate position x
+      calculatePositionX = (commandsX) => {
+        if (commandsX.length > 0) {
+          return (x = commandsX.reduce((a, b) => a + b));
+        } else {
+          return (x = 0);
+        }
+      };
+      //robot updated x and y coordinates
+      x = calculatePositionX(commandsX);
+      y = calculatePositionY(commandsY);
+      let robotPosition = grid[y][x];
 
-      default:
-        break;
+      // switch statement that process users input into a command
+      switch (command) {
+        // case N
+        case 'N':
+          // check if robot can keep moving north
+          if (robotPosition[0] === 10) {
+            console.log('error cant go any more North');
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          } else {
+            North();
+            x = calculatePositionX(commandsX);
+            y = calculatePositionY(commandsY);
+            robotPosition = grid[y][x];
+
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          }
+          break;
+        // case S
+        case 'S':
+          // check if robot can keep moving south
+          if (robotPosition[0] === 1) {
+            console.log('error cant go any more South');
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          } else {
+            South();
+            x = calculatePositionX(commandsX);
+            y = calculatePositionY(commandsY);
+            robotPosition = grid[y][x];
+
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          }
+          break;
+        // case E
+        case 'E':
+          // check if robot can keep moving east
+          if (robotPosition[1] === 10) {
+            console.log('error cant go any more East');
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          } else {
+            East();
+            x = calculatePositionX(commandsX);
+            y = calculatePositionY(commandsY);
+            robotPosition = grid[y][x];
+
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          }
+          break;
+        // case W
+        case 'W':
+          // check if robot can keep moving west
+          if (robotPosition[1] === 1) {
+            console.log('error cant move anymore West');
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          } else {
+            West();
+            x = calculatePositionX(commandsX);
+            y = calculatePositionY(commandsY);
+            robotPosition = grid[y][x];
+
+            console.log('robots coordinates (y, x): ', robotPosition);
+            app();
+          }
+          break;
+        default:
+          break;
+      }
     }
-  });
+  );
 }
 
 app();
