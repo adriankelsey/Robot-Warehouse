@@ -1,0 +1,19 @@
+{
+  "name": "robot-warehouse",
+  "version": "1.0.0",
+  "description": "Give commands to a robot on a 10 by 10 grid by using commands N S W E",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adriankelsey/Robot-Warehouse.git"
+  },
+  "author": "Adrian Kelsey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adriankelsey/Robot-Warehouse/issues"
+  },
+  "homepage": "https://github.com/adriankelsey/Robot-Warehouse#readme"
+}
