@@ -106,12 +106,14 @@ function crate2West() {
   crate2CommandsX.push(minusX);
 }
 
+// initialize crate 1 position
 for (i = 0; i < 4; i++) {
   crate1East();
   crate1North();
 }
 
-for (i = 0; i < 5; i++) {
+// initialize crate 2 position
+for (i = 0; i < 9; i++) {
   crate2East();
   crate2North();
 }
@@ -185,7 +187,6 @@ function app(state) {
   let crate1Position = grid[crate1Y][crate1X];
   let crate2Position = grid[crate2Y][crate2X];
 
-  let test;
   //robot
   let robot = {
     position: robotPosition,
@@ -300,7 +301,7 @@ function app(state) {
           //
           case 'S':
             // check if robot can keep moving South
-            if (robot.position[0] === 2) {
+            if (robot.position[0] === 1) {
               console.log('error cant go any more South');
               console.log('robots coordinates (y, x): ', robot.position);
 
