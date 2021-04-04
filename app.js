@@ -244,6 +244,7 @@ function app(state) {
         // switch statement that process users input into a command
         switch (command) {
           // move robot North
+          //
           case 'N':
             // check if robot can keep moving north
             if (robot.position[0] === 10) {
@@ -296,16 +297,17 @@ function app(state) {
             }
             break;
           // move robot South
+          //
           case 'S':
             // check if robot can keep moving South
-            if (robot.position[0] === 1) {
+            if (robot.position[0] === 2) {
               console.log('error cant go any more South');
               console.log('robots coordinates (y, x): ', robot.position);
 
               robotCommands();
             }
             // check if robot is carrying a crate 1
-            else if (robot.state === 1) {
+            else if (robot.state === 1 && robot.position === crate1.position) {
               South();
               crate1South();
               x = calculatePositionX(commandsX);
