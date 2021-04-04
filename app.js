@@ -101,7 +101,7 @@ let crate1 = {
 };
 
 // Main App
-function app() {
+function app(state) {
   // calculates array by adding array together with reduce
   // calculate position y
   calculatePositionY = (crateommandsY) => {
@@ -144,10 +144,11 @@ function app() {
   let robotPosition = grid[y][x];
   let cratePosition = grid[crateY][crateX];
 
+  let test;
   //robot
   let robot = {
     position: robotPosition,
-    state: '',
+    state: 0,
   };
   //crates
   let crate1 = {
@@ -196,13 +197,14 @@ function app() {
       function (command) {
         // switch statement that process users input into a command
         switch (command) {
-          // case N
+          // move robot North
           case 'N':
             // check if robot can keep moving north
             if (robot.position[0] === 10) {
               console.log('error cant go any more North');
               console.log('robots coordinates (y, x): ', robot.position);
-              app();
+
+              robotCommands();
             }
             // check if robot is carrying a crate
             else if (robot.state === 1) {
@@ -230,13 +232,14 @@ function app() {
               app();
             }
             break;
-          // case S
+          // move robot South
           case 'S':
-            // check if robot can keep moving south
-            if (robotPosition[0] === 1) {
+            // check if robot can keep moving South
+            if (robot.position[0] === 1) {
               console.log('error cant go any more South');
-              console.log('robots coordinates (y, x): ', robotPosition);
-              app();
+              console.log('robots coordinates (y, x): ', robot.position);
+
+              robotCommands();
             }
             // check if robot is carrying a crate
             else if (robot.state === 1) {
@@ -258,20 +261,21 @@ function app() {
               South();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              robotPosition = grid[y][x];
+              robot.position = grid[y][x];
 
-              console.log('robots coordinates (y, x): ', robotPosition);
-
+              console.log('robots coordinates (y, x): ', robot.position);
               app();
             }
             break;
-          // case E
+            break;
+          // move robot East
           case 'E':
-            // check if robot can keep moving east
-            if (robotPosition[1] === 10) {
+            // check if robot can keep moving north
+            if (robot.position[1] === 10) {
               console.log('error cant go any more East');
-              console.log('robots coordinates (y, x): ', robotPosition);
-              app();
+              console.log('robots coordinates (y, x): ', robot.position);
+
+              robotCommands();
             }
             // check if robot is carrying a crate
             else if (robot.state === 1) {
@@ -293,19 +297,21 @@ function app() {
               East();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              robotPosition = grid[y][x];
+              robot.position = grid[y][x];
 
-              console.log('robots coordinates (y, x): ', robotPosition);
+              console.log('robots coordinates (y, x): ', robot.position);
               app();
             }
             break;
-          // case W
+            break;
+          // move robot West
           case 'W':
-            // check if robot can keep moving west
-            if (robotPosition[1] === 1) {
-              console.log('error cant move anymore West');
-              console.log('robots coordinates (y, x): ', robotPosition);
-              app();
+            // check if robot can keep moving north
+            if (robot.position[1] === 1) {
+              console.log('error cant go any more West');
+              console.log('robots coordinates (y, x): ', robot.position);
+
+              robotCommands();
             }
             // check if robot is carrying a crate
             else if (robot.state === 1) {
@@ -324,12 +330,12 @@ function app() {
 
               robotCommands();
             } else {
-              West();
+              North();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              robotPosition = grid[y][x];
+              robot.position = grid[y][x];
 
-              console.log('robots coordinates (y, x): ', robotPosition);
+              console.log('robots coordinates (y, x): ', robot.position);
               app();
             }
             break;
@@ -352,7 +358,7 @@ function app() {
   }
   // check if robot is near a crate
   //check crate 1
-  if (robot.position === crate1.position) {
+  if (robot.position === crate1.position && robot.state === 0) {
     console.log('crate here');
     carryCrate();
   } else {
