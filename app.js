@@ -7,13 +7,14 @@ let commandsY = [];
 let x = 0;
 let y = 0;
 
-let crateX = 4;
-let crateY = 4;
+let crate1X = 4;
+let crate1Y = 4;
 
-let crateState = [];
+let crate1CommandsX = [];
+let crate1CommandsY = [];
 
-let crateCommandsX = [];
-let crateCommandsY = [];
+let crate2CommandsX = [];
+let crate2CommandsY = [];
 
 const readline = require('readline');
 const rl = readline.createInterface({
@@ -61,50 +62,65 @@ function West() {
   commandsX.push(minusX);
 }
 
-// crate commands
-function crateNorth() {
+// crate 1 commands
+//
+function crate1North() {
   let addY = 1;
-  crateCommandsY.push(addY);
+  crate1CommandsY.push(addY);
 }
 
-function crateSouth() {
+function crate1South() {
   let minusY = -1;
-  crateCommandsY.push(minusY);
+  crate1CommandsY.push(minusY);
 }
 
-function crateEast() {
+function crate1East() {
   let addX = 1;
-  crateCommandsX.push(addX);
+  crate1CommandsX.push(addX);
 }
 
-function crateWest() {
+function crate1West() {
   let minusX = -1;
-  crateCommandsX.push(minusX);
+  crate1CommandsX.push(minusX);
+}
+
+// crate 2 commands
+//
+function crate2North() {
+  let addY = 1;
+  crate2CommandsY.push(addY);
+}
+
+function crate2South() {
+  let minusY = -1;
+  crate2CommandsY.push(minusY);
+}
+
+function crate2East() {
+  let addX = 1;
+  crate2CommandsX.push(addX);
+}
+
+function crate2West() {
+  let minusX = -1;
+  crate2CommandsX.push(minusX);
 }
 
 for (i = 0; i < 4; i++) {
-  crateEast();
-  crateNorth();
+  crate1East();
+  crate1North();
 }
 
-//robot
-let robot = {
-  position: grid[x][y],
-  state: '',
-  carrying: [],
-};
-//crates
-let crate1 = {
-  name: 'crate 1',
-  position: grid[crateX][crateY],
-  state: crateState,
-};
+for (i = 0; i < 5; i++) {
+  crate2East();
+  crate2North();
+}
 
 // Main App
 function app(state) {
   // calculates array by adding array together with reduce
   // calculate position y
-  calculatePositionY = (crateommandsY) => {
+  calculatePositionY = (commandsY) => {
     if (commandsY.length > 0) {
       return (y = commandsY.reduce((a, b) => a + b));
     } else {
@@ -119,30 +135,55 @@ function app(state) {
       return (x = 0);
     }
   };
+  // crate 1
   // calculate crate position y
-  calculateCratePositionY = (crateCommandsY) => {
-    if (crateCommandsY.length > 0) {
-      return (crateY = crateCommandsY.reduce((a, b) => a + b));
+  calculateCrate1PositionY = (crate1CommandsY) => {
+    if (crate1CommandsY.length > 0) {
+      return (crate1Y = crate1CommandsY.reduce((a, b) => a + b));
     } else {
-      return (crateY = 0);
+      return (crate1Y = 0);
     }
   };
+  // crate 1
   // calculate crate position x
-  calculateCratePositionX = (commandsX) => {
-    if (commandsX.length > 0) {
-      return (crateX = commandsX.reduce((a, b) => a + b));
+  calculateCrate1PositionX = (crate1CommandsX) => {
+    if (crate1CommandsX.length > 0) {
+      return (crate1X = crate1CommandsX.reduce((a, b) => a + b));
     } else {
-      return (crateX = 0);
+      return (crate1X = 0);
     }
   };
-  //robot updated x and y coordinates assigned to varaibles
+  // crate 2
+  // calculate crate position y
+  calculateCrate2PositionY = (crate2CommandsY) => {
+    if (crate2CommandsY.length > 0) {
+      return (crate2Y = crate2CommandsY.reduce((a, b) => a + b));
+    } else {
+      return (crate2Y = 0);
+    }
+  };
+  // crate 2
+  // calculate crate position x
+  calculateCrate2PositionX = (crate2CommandsX) => {
+    if (crate2CommandsX.length > 0) {
+      return (crate2X = crate2CommandsX.reduce((a, b) => a + b));
+    } else {
+      return (crate2X = 0);
+    }
+  };
+  // robot updated x and y coordinates assigned to varaibles
   x = calculatePositionX(commandsX);
   y = calculatePositionY(commandsY);
   // crate updated x and y coordinates assigned to variables
-  crateX = calculateCratePositionX(crateCommandsX);
-  crateY = calculateCratePositionY(crateCommandsY);
+  // crate 1
+  crate1X = calculateCrate1PositionX(crate1CommandsX);
+  crate1Y = calculateCrate1PositionY(crate1CommandsY);
+  // crate 2
+  crate2X = calculateCrate2PositionX(crate2CommandsX);
+  crate2Y = calculateCrate2PositionY(crate2CommandsY);
   let robotPosition = grid[y][x];
-  let cratePosition = grid[crateY][crateX];
+  let crate1Position = grid[crate1Y][crate1X];
+  let crate2Position = grid[crate2Y][crate2X];
 
   let test;
   //robot
@@ -153,7 +194,12 @@ function app(state) {
   //crates
   let crate1 = {
     name: 'crate 1',
-    position: cratePosition,
+    position: crate1Position,
+  };
+
+  let crate2 = {
+    name: 'crate 2',
+    position: crate2Position,
   };
 
   // detect crate
@@ -174,11 +220,11 @@ function app(state) {
           case 'G':
             // robot state equals 1 to symbol robot is carrying a crate
             robot.state = 1;
-            crate1.position = robotPosition;
-            console.log(
-              `${crate1.name} has been picked up at `,
-              crate1.position
-            );
+            if (robot.position === crate1.position) {
+              console.log(`${crate1.name} has been picked up`);
+            } else if (robot.position === crate2.position) {
+              console.log(`${crate2.name} has been picked up`);
+            }
             robotCommands(robot.state, crate1.position);
             break;
           case 'E':
@@ -191,7 +237,7 @@ function app(state) {
   }
 
   // readline question
-  function robotCommands(robotState, cratePosition) {
+  function robotCommands(robotState, crate1Position) {
     rl.question(
       'Give robot commands by typing N, W, E, S:  ',
       function (command) {
@@ -206,20 +252,37 @@ function app(state) {
 
               robotCommands();
             }
-            // check if robot is carrying a crate
-            else if (robot.state === 1) {
+            // check if robot is carrying a crate 1
+            else if (robot.state === 1 && robot.position === crate1.position) {
               North();
-              crateNorth();
+              crate1North();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              crateX = calculateCratePositionX(crateCommandsX);
-              crateY = calculateCratePositionY(crateCommandsY);
+              crate1X = calculateCrate1PositionX(crate1CommandsX);
+              crate1Y = calculateCrate1PositionY(crate1CommandsY);
 
               robot.position = grid[y][x];
-              crate1.position = grid[crateY][crateX];
+              crate1.position = grid[crate1Y][crate1X];
 
               console.log('robots coordinates (y, x): ', robot.position);
               console.log('robot is carrying a crate type D to drop it');
+
+              robotCommands();
+            }
+            // check if robot is carrying crate 2
+            else if (robot.state === 1 && robot.position === crate2.position) {
+              North();
+              crate2North();
+              x = calculatePositionX(commandsX);
+              y = calculatePositionY(commandsY);
+              crate2X = calculateCrate1PositionX(crate2CommandsX);
+              crate2Y = calculateCrate1PositionY(crate2CommandsY);
+
+              robot.position = grid[y][x];
+              crate2.position = grid[crate2Y][crate2X];
+
+              console.log('robots coordinates (y, x): ', robot.position);
+              console.log('robot is carrying a crate 2 type D to drop it');
 
               robotCommands();
             } else {
@@ -241,20 +304,37 @@ function app(state) {
 
               robotCommands();
             }
-            // check if robot is carrying a crate
+            // check if robot is carrying a crate 1
             else if (robot.state === 1) {
               South();
-              crateSouth();
+              crate1South();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              crateX = calculateCratePositionX(crateCommandsX);
-              crateY = calculateCratePositionY(crateCommandsY);
+              crate1X = calculateCrate1PositionX(crate1CommandsX);
+              crate1Y = calculateCrate1PositionY(crate1CommandsY);
 
               robot.position = grid[y][x];
-              crate1.position = grid[crateY][crateX];
+              crate1.position = grid[crate1Y][crate1X];
 
               console.log('robots coordinates (y, x): ', robot.position);
               console.log('robot is carrying a crate type D to drop it');
+
+              robotCommands();
+            }
+            // check if robot is carrying crate 2
+            else if (robot.state === 1 && robot.position === crate2.position) {
+              South();
+              crate2South();
+              x = calculatePositionX(commandsX);
+              y = calculatePositionY(commandsY);
+              crate2X = calculateCrate1PositionX(crate2CommandsX);
+              crate2Y = calculateCrate1PositionY(crate2CommandsY);
+
+              robot.position = grid[y][x];
+              crate2.position = grid[crate2Y][crate2X];
+
+              console.log('robots coordinates (y, x): ', robot.position);
+              console.log('robot is carrying a crate 2 type D to drop it');
 
               robotCommands();
             } else {
@@ -280,17 +360,34 @@ function app(state) {
             // check if robot is carrying a crate
             else if (robot.state === 1) {
               East();
-              crateEast();
+              crate1East();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              crateX = calculateCratePositionX(crateCommandsX);
-              crateY = calculateCratePositionY(crateCommandsY);
+              crate1X = calculateCrate1PositionX(crate1CommandsX);
+              crate1Y = calculateCrate1PositionY(crate1CommandsY);
 
               robot.position = grid[y][x];
-              crate1.position = grid[crateY][crateX];
+              crate1.position = grid[crate1Y][crate1X];
 
               console.log('robots coordinates (y, x): ', robot.position);
               console.log('robot is carrying a crate type D to drop it');
+
+              robotCommands();
+            }
+            // check if robot is carrying crate 2
+            else if (robot.state === 1 && robot.position === crate2.position) {
+              East();
+              crate2East();
+              x = calculatePositionX(commandsX);
+              y = calculatePositionY(commandsY);
+              crate2X = calculateCrate1PositionX(crate2CommandsX);
+              crate2Y = calculateCrate1PositionY(crate2CommandsY);
+
+              robot.position = grid[y][x];
+              crate2.position = grid[crate2Y][crate2X];
+
+              console.log('robots coordinates (y, x): ', robot.position);
+              console.log('robot is carrying a crate 2 type D to drop it');
 
               robotCommands();
             } else {
@@ -316,21 +413,38 @@ function app(state) {
             // check if robot is carrying a crate
             else if (robot.state === 1) {
               West();
-              crateWest();
+              crate1West();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
-              crateX = calculateCratePositionX(crateCommandsX);
-              crateY = calculateCratePositionY(crateCommandsY);
+              crate1X = calculateCrate1PositionX(crate1CommandsX);
+              crate1Y = calculateCrate1PositionY(crate1CommandsY);
 
               robot.position = grid[y][x];
-              crate1.position = grid[crateY][crateX];
+              crate1.position = grid[crate1Y][crate1X];
 
               console.log('robots coordinates (y, x): ', robot.position);
               console.log('robot is carrying a crate type D to drop it');
 
               robotCommands();
+            }
+            // check if robot is carrying crate 2
+            else if (robot.state === 1 && robot.position === crate2.position) {
+              West();
+              crate2West();
+              x = calculatePositionX(commandsX);
+              y = calculatePositionY(commandsY);
+              crate2X = calculateCrate1PositionX(crate2CommandsX);
+              crate2Y = calculateCrate1PositionY(crate2CommandsY);
+
+              robot.position = grid[y][x];
+              crate2.position = grid[crate2Y][crate2X];
+
+              console.log('robots coordinates (y, x): ', robot.position);
+              console.log('robot is carrying a crate 2 type D to drop it');
+
+              robotCommands();
             } else {
-              North();
+              West();
               x = calculatePositionX(commandsX);
               y = calculatePositionY(commandsY);
               robot.position = grid[y][x];
@@ -340,13 +454,22 @@ function app(state) {
             }
             break;
           case 'D':
-            if (robot.state === 1) {
-              console.log('crate had been dropped at', crate1.position);
+            // drop crate 1
+            if (robot.state === 1 && robot.position === crate1.position) {
+              console.log('crate 1 had been dropped at', crate1.position);
+              console.log('robots coordinates (y, x): ', robot.position);
+              robot.state = 0;
+              robotCommands();
+            }
+            // drop crate 2
+            else if (robot.state === 1 && robot.position === crate2.position) {
+              console.log('crate 2 had been dropped at', crate2.position);
               console.log('robots coordinates (y, x): ', robot.position);
               robot.state = 0;
               robotCommands();
             } else {
               console.log('robot is not carrying anything');
+              console.log(crate2.position);
               robotCommands();
             }
 
@@ -359,7 +482,10 @@ function app(state) {
   // check if robot is near a crate
   //check crate 1
   if (robot.position === crate1.position && robot.state === 0) {
-    console.log('crate here');
+    console.log('crate 1 here');
+    carryCrate();
+  } else if (robotPosition === crate2.position && robot.state === 0) {
+    console.log('crate 2 here');
     carryCrate();
   } else {
     robotCommands();
