@@ -226,7 +226,7 @@ function app(state) {
             } else if (robot.position === crate2.position) {
               console.log(`${crate2.name} has been picked up`);
             }
-            robotCommands(robot.state, crate1.position);
+            robotCommands();
             break;
           case 'E':
             robotCommands();
@@ -465,14 +465,23 @@ function app(state) {
               robotCommands();
             }
             // drop crate 2
-            else if (robot.state === 1 && robot.position === crate2.position) {
+            if (
+              robot.position === crate1.position &&
+              robot.position == crate2.position &&
+              robot.state === 0
+            ) {
+              console.log('cannot drop crate here');
+              robotCommands();
+            } else if (
+              robot.state === 1 &&
+              robot.position === crate2.position
+            ) {
               console.log('crate 2 had been dropped at', crate2.position);
               console.log('robots coordinates (y, x): ', robot.position);
               robot.state = 0;
               robotCommands();
             } else {
               console.log('robot is not carrying anything');
-              console.log(crate2.position);
               robotCommands();
             }
 
